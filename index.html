@@ -15,7 +15,7 @@
         .name-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%); color: var(--heart-color); font-size: 2.5rem; font-family: 'Dancing Script', cursive; text-shadow: 0 0 15px var(--heart-color); z-index: 101; pointer-events: none; animation: textPulse 1.3s infinite; }
 
         /* NÚT MỞ QUÀ */
-        #btn-start { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 15px 35px; border-radius: 40px; border: none; background: var(--heart-color); color: white; font-weight: bold; cursor: pointer; display: none; z-index: 150; box-shadow: 0 0 25px var(--heart-color); font-size: 1.3rem; animation: btnBounce 2s infinite; }
+        #btn-start { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 15px 35px; border-radius: 40px; border: none; background: var(--heart-color); color: white; font-weight: bold; cursor: pointer; display: none; z-index: 150; box-shadow: 0 0 25px var(--heart-color); font-size: 1.3rem; }
 
         /* MÀN 2: CHIBI */
         #screen-2 { position: fixed; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; background: linear-gradient(to bottom, #ffeef2, #ffcad4); z-index: 90; opacity: 0; transition: opacity 1s; flex-direction: column; }
@@ -33,13 +33,12 @@
 
         @keyframes textPulse { 0%, 100% { transform: translate(-50%, -55%) scale(1); } 50% { transform: translate(-50%, -55%) scale(1.1); } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        @keyframes btnBounce { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.05); } }
     </style>
 </head>
 <body>
 
     <audio id="bg-music" loop preload="auto">
-        <source src="https://files.catbox.moe/ql62xl.mp3" type="audio/mpeg">
+        <source src="mộtđời.mp3" type="audio/mpeg">
     </audio>
 
     <div id="screen-1">
@@ -47,7 +46,7 @@
         <div class="name-center">dvan mhang</div>
     </div>
 
-    <button id="btn-start">Chạm để mở quà nhé mhang ❤️</button>
+    <button id="btn-start">Mở món quà này nhé ❤️</button>
 
     <div id="screen-2">
         <img src="https://cdn-icons-png.flaticon.com/512/6988/6988831.png" class="chibi-img">
@@ -60,7 +59,7 @@
     </div>
 
     <script>
-        /* --- THUẬT TOÁN TRÁI TIM LÝ TUÂN --- */
+        /* --- THUẬT TOÁN TRÁI TIM (LÝ TUÂN) --- */
         var settings = { particles: { length: 2000, duration: 2, velocity: 100, effect: -1.3, size: 13 } };
         (function(){var b=0;var c=["ms","moz","webkit","o"];for(var a=0;a<c.length&&!window.requestAnimationFrame;++a){window.requestAnimationFrame=window[c[a]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[c[a]+"CancelAnimationFrame"]||window[c[a]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame){window.requestAnimationFrame=function(h,e){var d=new Date().getTime();var f=Math.max(0,16-(d-b));var g=window.setTimeout(function(){h(d+f)},f);b=d+f;return g}}if(!window.cancelAnimationFrame){window.cancelAnimationFrame=function(d){clearTimeout(d)}}}());
         var Point=(function(){function Point(x,y){this.x=(typeof x!=='undefined')?x:0;this.y=(typeof y!=='undefined')?y:0}Point.prototype.clone=function(){return new Point(this.x,this.y)};Point.prototype.length=function(length){if(typeof length=='undefined')return Math.sqrt(this.x*this.x+this.y*this.y);this.normalize();this.x*=length;this.y*=length;return this};Point.prototype.normalize=function(){var length=this.length();this.x/=length;this.y/=length;return this};return Point})();
@@ -74,26 +73,21 @@
             function onResize(){canvas.width=canvas.clientWidth;canvas.height=canvas.clientHeight}window.onresize=onResize;setTimeout(onResize,10);render();
         })(document.getElementById('pinkboard'));
 
-        /* --- LOGIC ĐIỀU KHIỂN NHẠC TRÊN CỐC CỐC --- */
+        /* --- LOGIC NGHIỆP VỤ --- */
         const music = document.getElementById('bg-music');
         const btn = document.getElementById('btn-start');
 
-        window.onload = () => { 
-            setTimeout(() => { 
-                document.getElementById('screen-1').style.opacity = '0.3'; 
-                btn.style.display = 'block'; 
-            }, 4000); 
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('screen-1').style.opacity = '0.3';
+                btn.style.display = 'block';
+            }, 5000);
         };
 
         btn.onclick = () => {
-            // Kích hoạt Audio Context cho Cốc Cốc
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
+            // Lách luật Cốc Cốc: Phát nhạc ngay khi chạm
             music.play().then(() => {
-                console.log("Nhạc đang phát rạng rỡ!");
+                console.log("Nhạc Một Đời bắt đầu phát!");
             }).catch(e => {
                 alert("Mhang ơi, hãy chạm vào màn hình để nghe nhạc và xem quà nhé!");
                 music.play();
@@ -130,7 +124,7 @@
             item.style.left = Math.random() * (window.innerWidth - 180) + 'px';
             item.style.top = Math.random() * (window.innerHeight - 180) + 'px';
             document.getElementById('screen-3').appendChild(item);
-            setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1.1) rotate('+(Math.random()*20-10)+'deg)'; }, 100);
+            setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1.1)'; }, 100);
             setTimeout(() => { item.style.opacity = '0'; setTimeout(() => item.remove(), 1000); }, 3000);
         }
 
