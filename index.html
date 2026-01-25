@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi dvan mhang ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --heart-color: #FF5CA4; }
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; font-family: 'Quicksand', sans-serif; }
+
+        /* MÀN 1: TRÁI TIM */
+        #screen-1 { position: fixed; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 100; transition: opacity 1.5s; background: #000; }
+        #pinkboard { position: relative; width: 100%; height: 100%; }
+        .name-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%); color: var(--heart-color); font-size: 2.5rem; font-family: 'Dancing Script', cursive; text-shadow: 0 0 15px var(--heart-color); z-index: 101; pointer-events: none; animation: textPulse 1.3s infinite; }
+
+        /* NÚT MỞ QUÀ */
+        #btn-start { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 15px 35px; border-radius: 40px; border: none; background: var(--heart-color); color: white; font-weight: bold; cursor: pointer; display: none; z-index: 150; box-shadow: 0 0 25px var(--heart-color); font-size: 1.3rem; animation: btnBounce 2s infinite; }
+
+        /* MÀN 2: CHIBI */
+        #screen-2 { position: fixed; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; background: linear-gradient(to bottom, #ffeef2, #ffcad4); z-index: 90; opacity: 0; transition: opacity 1s; flex-direction: column; }
+        .chibi-img { width: 200px; animation: float 3s infinite ease-in-out; }
+        .dialog-box { background: white; padding: 20px; border-radius: 20px; margin-top: 20px; color: #d63384; font-weight: bold; text-align: center; max-width: 85%; border: 2px solid #ffcad4; line-height: 1.6; }
+
+        /* MÀN 3: KỶ NIỆM */
+        #screen-3 { position: fixed; width: 100%; height: 100%; display: none; background: #ffeef2; z-index: 80; overflow: hidden; }
+        .memory-item { position: absolute; width: 180px; height: 180px; object-fit: cover; border-radius: 15px; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); opacity: 0; transition: opacity 1s, transform 1s; z-index: 81; }
+
+        /* MÀN 4: KẾT THÚC */
+        #screen-4 { position: fixed; width: 100%; height: 100%; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 110; opacity: 0; transition: opacity 2s; background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%); }
+        .wish-text { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #fff; text-align: center; padding: 30px; text-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 111; }
+        #fireworks { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+        @keyframes textPulse { 0%, 100% { transform: translate(-50%, -55%) scale(1); } 50% { transform: translate(-50%, -55%) scale(1.1); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes btnBounce { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.05); } }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://files.catbox.moe/ql62xl.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="screen-1">
+        <canvas id="pinkboard"></canvas>
+        <div class="name-center">dvan mhang</div>
+    </div>
+
+    <button id="btn-start">Chạm để mở quà nhé mhang ❤️</button>
+
+    <div id="screen-2">
+        <img src="https://cdn-icons-png.flaticon.com/512/6988/6988831.png" class="chibi-img">
+        <div class="dialog-box" id="talk">Chào mhang của anh...</div>
+    </div>
+    <div id="screen-3"></div>
+    <div id="screen-4">
+        <canvas id="fireworks"></canvas>
+        <div class="wish-text">Anh yêu dvan mhang nhất trên đời! ❤️</div>
+    </div>
+
+    <script>
+        /* --- THUẬT TOÁN TRÁI TIM LÝ TUÂN --- */
+        var settings = { particles: { length: 2000, duration: 2, velocity: 100, effect: -1.3, size: 13 } };
+        (function(){var b=0;var c=["ms","moz","webkit","o"];for(var a=0;a<c.length&&!window.requestAnimationFrame;++a){window.requestAnimationFrame=window[c[a]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[c[a]+"CancelAnimationFrame"]||window[c[a]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame){window.requestAnimationFrame=function(h,e){var d=new Date().getTime();var f=Math.max(0,16-(d-b));var g=window.setTimeout(function(){h(d+f)},f);b=d+f;return g}}if(!window.cancelAnimationFrame){window.cancelAnimationFrame=function(d){clearTimeout(d)}}}());
+        var Point=(function(){function Point(x,y){this.x=(typeof x!=='undefined')?x:0;this.y=(typeof y!=='undefined')?y:0}Point.prototype.clone=function(){return new Point(this.x,this.y)};Point.prototype.length=function(length){if(typeof length=='undefined')return Math.sqrt(this.x*this.x+this.y*this.y);this.normalize();this.x*=length;this.y*=length;return this};Point.prototype.normalize=function(){var length=this.length();this.x/=length;this.y/=length;return this};return Point})();
+        var Particle=(function(){function Particle(){this.position=new Point();this.velocity=new Point();this.acceleration=new Point();this.age=0}Particle.prototype.initialize=function(x,y,dx,dy){this.position.x=x;this.position.y=y;this.velocity.x=dx;this.velocity.y=dy;this.acceleration.x=dx*settings.particles.effect;this.acceleration.y=dy*settings.particles.effect;this.age=0};Particle.prototype.update=function(deltaTime){this.position.x+=this.velocity.x*deltaTime;this.position.y+=this.velocity.y*deltaTime;this.velocity.x+=this.acceleration.x*deltaTime;this.velocity.y+=this.acceleration.y*deltaTime;this.age+=deltaTime};Particle.prototype.draw=function(context,image){function ease(t){return(--t)*t*t+1}var size=image.width*ease(this.age/settings.particles.duration);context.globalAlpha=1-this.age/settings.particles.duration;context.drawImage(image,this.position.x-size/2,this.position.y-size/2,size,size)};return Particle})();
+        var ParticlePool=(function(){var particles,firstActive=0,firstFree=0,duration=settings.particles.duration;function ParticlePool(length){particles=new Array(length);for(var i=0;i<particles.length;i++)particles[i]=new Particle()}ParticlePool.prototype.add=function(x,y,dx,dy){particles[firstFree].initialize(x,y,dx,dy);firstFree++;if(firstFree==particles.length)firstFree=0;if(firstActive==firstFree)firstActive++;if(firstActive==particles.length)firstActive=0};ParticlePool.prototype.update=function(deltaTime){var i;if(firstActive<firstFree){for(i=firstActive;i<firstFree;i++)particles[i].update(deltaTime)}if(firstFree<firstActive){for(i=firstActive;i<particles.length;i++)particles[i].update(deltaTime);for(i=0;i<firstFree;i++)particles[i].update(deltaTime)}while(particles[firstActive].age>=duration&&firstActive!=firstFree){firstActive++;if(firstActive==particles.length)firstActive=0}};ParticlePool.prototype.draw=function(context,image){if(firstActive<firstFree){for(i=firstActive;i<firstFree;i++)particles[i].draw(context,image)}if(firstFree<firstActive){for(i=firstActive;i<particles.length;i++)particles[i].draw(context,image);for(i=0;i<firstFree;i++)particles[i].draw(context,image)}};return ParticlePool})();
+        (function(canvas){
+            var context=canvas.getContext('2d'),particles=new ParticlePool(settings.particles.length),particleRate=settings.particles.length/settings.particles.duration,time;
+            function pointOnHeart(t){return new Point(160*Math.pow(Math.sin(t),3),130*Math.cos(t)-50*Math.cos(2*t)-20*Math.cos(3*t)-10*Math.cos(4*t)+25)}
+            var image=(function(){var canvas=document.createElement('canvas'),context=canvas.getContext('2d');canvas.width=settings.particles.size;canvas.height=settings.particles.size;function to(t){var point=pointOnHeart(t);point.x=settings.particles.size/2+point.x*settings.particles.size/350;point.y=settings.particles.size/2-point.y*settings.particles.size/350;return point}context.beginPath();var t=-Math.PI;var point=to(t);context.moveTo(point.x,point.y);while(t<Math.PI){t+=0.01;point=to(t);context.lineTo(point.x,point.y)}context.closePath();context.fillStyle='#FF5CA4';context.fill();var image=new Image();image.src=canvas.toDataURL();return image})();
+            function render(){requestAnimationFrame(render);var newTime=new Date().getTime()/1000,deltaTime=newTime-(time||newTime);time=newTime;context.clearRect(0,0,canvas.width,canvas.height);var amount=particleRate*deltaTime;for(var i=0;i<amount;i++){var pos=pointOnHeart(Math.PI-2*Math.PI*Math.random());var dir=pos.clone().length(settings.particles.velocity);particles.add(canvas.width/2+pos.x,canvas.height/2-pos.y,dir.x,-dir.y)}particles.update(deltaTime);particles.draw(context,image)}
+            function onResize(){canvas.width=canvas.clientWidth;canvas.height=canvas.clientHeight}window.onresize=onResize;setTimeout(onResize,10);render();
+        })(document.getElementById('pinkboard'));
+
+        /* --- LOGIC ĐIỀU KHIỂN NHẠC TRÊN CỐC CỐC --- */
+        const music = document.getElementById('bg-music');
+        const btn = document.getElementById('btn-start');
+
+        window.onload = () => { 
+            setTimeout(() => { 
+                document.getElementById('screen-1').style.opacity = '0.3'; 
+                btn.style.display = 'block'; 
+            }, 4000); 
+        };
+
+        btn.onclick = () => {
+            // Kích hoạt Audio Context cho Cốc Cốc
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            music.play().then(() => {
+                console.log("Nhạc đang phát rạng rỡ!");
+            }).catch(e => {
+                alert("Mhang ơi, hãy chạm vào màn hình để nghe nhạc và xem quà nhé!");
+                music.play();
+            });
+
+            btn.style.display = 'none';
+            document.getElementById('screen-1').style.opacity = '0';
+            setTimeout(() => { document.getElementById('screen-1').style.display = 'none'; startIntro(); }, 1000);
+        };
+
+        function startIntro() {
+            const s2 = document.getElementById('screen-2');
+            s2.style.display = 'flex';
+            setTimeout(() => s2.style.opacity = '1', 100);
+            const sc = ["Chào mhang yêu dấu...", "Kỷ niệm của tụi mình thật đẹp!", "Hãy cùng nhìn lại nhé...", "Bắt đầu thôi!"];
+            let i = 0;
+            let t = setInterval(() => { if (i < sc.length) document.getElementById('talk').innerText = sc[i++]; else { clearInterval(t); startMemories(); } }, 3000);
+        }
+
+        function startMemories() {
+            document.getElementById('screen-2').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('screen-2').style.display = 'none';
+                document.getElementById('screen-3').style.display = 'block';
+                let c = 0;
+                let f = setInterval(() => { if (c < 60) { createMemory(); c++; } else { clearInterval(f); showFinal(); } }, 1000);
+            }, 1000);
+        }
+
+        function createMemory() {
+            const item = document.createElement('img');
+            item.className = 'memory-item';
+            item.src = 'https://via.placeholder.com/300x300'; // THAY LINK ẢNH CỦA BẠN TẠI ĐÂY
+            item.style.left = Math.random() * (window.innerWidth - 180) + 'px';
+            item.style.top = Math.random() * (window.innerHeight - 180) + 'px';
+            document.getElementById('screen-3').appendChild(item);
+            setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1.1) rotate('+(Math.random()*20-10)+'deg)'; }, 100);
+            setTimeout(() => { item.style.opacity = '0'; setTimeout(() => item.remove(), 1000); }, 3000);
+        }
+
+        function showFinal() {
+            document.getElementById('screen-3').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('screen-3').style.display = 'none';
+                const s4 = document.getElementById('screen-4');
+                s4.style.display = 'flex';
+                setTimeout(() => { s4.style.opacity = '1'; startFireworks(); }, 100);
+            }, 1500);
+        }
+
+        function startFireworks() {
+            const canvas = document.getElementById('fireworks');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            function P(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                this.v = { x: Math.random() * 6 - 3, y: Math.random() * 6 - 3 };
+                this.l = 100;
+                this.draw = () => { ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); };
+                this.update = () => { this.x += this.v.x; this.y += this.v.y; this.l--; };
+            }
+            let ps = [];
+            function anim() {
+                ctx.fillStyle = 'rgba(255, 192, 203, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                if (Math.random() < 0.1) {
+                    let x = Math.random() * canvas.width;
+                    let y = Math.random() * canvas.height;
+                    for (let i = 0; i < 20; i++) ps.push(new P(x, y, 'hsl('+Math.random()*360+', 100%, 70%)'));
+                }
+                ps.forEach((p, i) => { if (p.l > 0) { p.update(); p.draw(); } else ps.splice(i, 1); });
+                requestAnimationFrame(anim);
+            }
+            anim();
+        }
+    </script>
+</body>
+</html>
