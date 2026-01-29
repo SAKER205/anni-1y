@@ -9,7 +9,7 @@
         :root { --heart-color: #FF5CA4; --bg-soft: #ffeef2; }
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; font-family: 'Quicksand', sans-serif; touch-action: manipulation; }
 
-        /* MÀN 1: TRÁI TIM CHỦ ĐẠO */
+        /* MÀN 1: TRÁI TIM GỐC */
         #screen-1 { position: fixed; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 100; transition: opacity 1.5s; background: #000; }
         #pinkboard { position: relative; width: 100%; height: 100%; }
         .name-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%); color: var(--heart-color); font-size: 1.8rem; font-family: 'Dancing Script', cursive; text-shadow: 0 0 15px var(--heart-color); z-index: 101; pointer-events: none; animation: textPulse 1.3s infinite; text-align: center; width: 100%; }
@@ -21,11 +21,11 @@
             box-shadow: 0 0 30px var(--heart-color); font-size: 1rem; width: 85%; max-width: 320px;
         }
 
-        /* MÀN 2 & 3: KỶ NIỆM */
+        /* MÀN 2 & 3: BACKGROUND */
         #screen-2, #screen-3 { background: var(--bg-soft) url('https://www.transparenttextures.com/patterns/heart.png'); }
         #screen-2 { position: fixed; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; z-index: 90; opacity: 0; transition: opacity 2s; flex-direction: column; }
         .chibi-img { width: 160px; max-width: 50%; animation: float 3s infinite ease-in-out; border-radius: 20px; }
-        .dialog-box { background: white; padding: 15px; border-radius: 20px; margin-top: 20px; color: #d63384; font-weight: bold; text-align: center; width: 85%; border: 2px solid #ffcad4; box-shadow: 0 10px 20px rgba(0,0,0,0.05); font-size: 0.95rem; line-height: 1.4; }
+        .dialog-box { background: white; padding: 15px; border-radius: 20px; margin-top: 20px; color: #d63384; font-weight: bold; text-align: center; width: 85%; border: 2px solid #ffcad4; box-shadow: 0 10px 20px rgba(0,0,0,0.05); font-size: 0.95rem; }
 
         #screen-3 { position: fixed; width: 100%; height: 100%; display: none; z-index: 80; overflow: hidden; }
         .memory-item {
@@ -35,7 +35,7 @@
             opacity: 0; transition: opacity 1.5s ease-in-out, transform 2s ease-in-out; z-index: 81;
         }
 
-        /* MÀN 4: CUỘN THƯ - TỐI ƯU IPHONE XR */
+        /* MÀN 4: CUỘN THƯ */
         #screen-letter {
             position: fixed; width: 100%; height: 100%; display: none;
             justify-content: center; align-items: center; z-index: 200;
@@ -50,11 +50,7 @@
             display: flex; flex-direction: column;
         }
         .scroll-container.open { max-height: 65vh; overflow-y: auto; }
-        .letter-content { 
-            font-family: 'Dancing Script', cursive; font-size: 1.25rem; color: #5d4037; 
-            line-height: 1.7; text-align: center; white-space: pre-wrap; 
-            word-wrap: break-word; overflow-wrap: break-word;
-        }
+        .letter-content { font-family: 'Dancing Script', cursive; font-size: 1.25rem; color: #5d4037; line-height: 1.7; text-align: center; white-space: pre-wrap; word-wrap: break-word; }
         .letter-content span { opacity: 0; transition: opacity 0.02s; }
         .letter-content span.visible { opacity: 1; }
         #scroll-anchor { height: 1px; width: 100%; flex-shrink: 0; }
@@ -116,8 +112,8 @@
     </div>
 
     <script>
-        /* --- THUẬT TOÁN TRÁI TIM --- */
-        var settings = { particles: { length: 2000, duration: 4, velocity: 100, effect: -1.3, size: 13 } };
+        /* --- KHÔI PHỤC TRÁI TIM GỐC --- */
+        var settings = { particles: { length: 2000, duration: 2, velocity: 100, effect: -1.3, size: 13 } };
         (function(){var b=0;var c=["ms","moz","webkit","o"];for(var a=0;a<c.length&&!window.requestAnimationFrame;++a){window.requestAnimationFrame=window[c[a]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[c[a]+"CancelAnimationFrame"]||window[c[a]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame){window.requestAnimationFrame=function(h,e){var d=new Date().getTime();var f=Math.max(0,16-(d-b));var g=window.setTimeout(function(){h(d+f)},f);b=d+f;return g}}if(!window.cancelAnimationFrame){window.cancelAnimationFrame=function(d){clearTimeout(d)}}}());
         var Point=(function(){function Point(x,y){this.x=(typeof x!=='undefined')?x:0;this.y=(typeof y!=='undefined')?y:0}Point.prototype.clone=function(){return new Point(this.x,this.y)};Point.prototype.length=function(length){if(typeof length=='undefined')return Math.sqrt(this.x*this.x+this.y*this.y);this.normalize();this.x/=length;this.y/=length;return this};Point.prototype.normalize=function(){var length=this.length();this.x/=length;this.y/=length;return this};return Point})();
         var Particle=(function(){function Particle(){this.position=new Point();this.velocity=new Point();this.acceleration=new Point();this.age=0}Particle.prototype.initialize=function(x,y,dx,dy){this.position.x=x;this.position.y=y;this.velocity.x=dx;this.velocity.y=dy;this.acceleration.x=dx*settings.particles.effect;this.acceleration.y=dy*settings.particles.effect;this.age=0};Particle.prototype.update=function(deltaTime){this.position.x+=this.velocity.x*deltaTime;this.position.y+=this.velocity.y*deltaTime;this.velocity.x+=this.acceleration.x*deltaTime;this.velocity.y+=this.acceleration.y*deltaTime;this.age+=deltaTime};Particle.prototype.draw=function(context,image){function ease(t){return(--t)*t*t+1}var size=image.width*ease(this.age/settings.particles.duration);context.globalAlpha=1-this.age/settings.particles.duration;context.drawImage(image,this.position.x-size/2,this.position.y-size/2,size,size)};return Particle})();
@@ -130,14 +126,14 @@
             function onResize(){canvas.width=canvas.clientWidth;canvas.height=canvas.clientHeight}window.onresize=onResize;setTimeout(onResize,10);render();
         })(document.getElementById('pinkboard'));
 
-        /* --- LOGIC CHÍNH --- */
+        /* --- LOGIC CHỐNG TRÙNG --- */
         let photoPool = Array.from({ length: 50 }, (_, i) => `img/${i + 1}.jpg`);
         const loveLetter = `Gửi mhang của anh\n\n Vậy là chúng ta đã bên nhau được một năm rồi đấy. Anh yêu em nhiều lắm. Anh hạnh phúc khi được cùng em đồng hành, cùng em chiêm nghiệm thế giới xung quanh. Có em đến bên đời, cuộc sống của anh có thêm nhiều màu sắc hơn, có thêm nhiều ý nghĩa hơn. Đặc biệt, em đã khiến anh cảm thấy được yêu là như thế nào. Anh không phải là người sâu sắc trong mọi hành động, đôi khi làm em phát bực, anh xin lỗi em vì những lần khó ưa của anh. Anh ước mong mình sẽ bên nhau thật lâu, thật lâu, vì anh yêu em, anh muốn được hạnh phúc cùng với em. Nếu mình sai thì cùng sửa, nếu có sóng gió thì cùng nhau vượt qua nhé em. Đoạn đường phía trước còn dài, anh sẽ bảo vệ và che chở em, cục cưng của anh ạ! \n\n Anh yêu em nhiều lắm ❤️\n\n Người yêu em, Trần Đức Văn`;
 
         const music = document.getElementById('bg-music');
         const btn = document.getElementById('btn-start');
 
-        window.onload = () => { setTimeout(() => { btn.style.display = 'block'; }, 4000); };
+        window.onload = () => { setTimeout(() => { btn.style.display = 'block'; }, 6000); }; // Trái tim hiện 6s
 
         btn.onclick = () => {
             music.play();
